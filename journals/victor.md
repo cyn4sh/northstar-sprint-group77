@@ -33,3 +33,10 @@
 - Result: Identified Python's `time.sleep()` as the basic mechanism for pausing the current execution for a specified number of seconds. This can be used to implement the "wait" part of backoff between retry attempts. Still need to determine how the delay should be calculated dynamically for different retry attempts, particularly when using exponential backoff and jitter.
 - Source consulted: Python documentation / research on `time.sleep()`.
 - Next: Work out the formula for calculating exponential backoff delay across increasing retry attempts, and how jitter gets added to it.
+
+### [16:05] Attempting: Build a first simple retry/backoff prototype that retries a failed operation, waits longer after each failure, and stops after a maximum number of retries.
+
+- Tried: Researched the exponential backoff formula and used `time.sleep()` to introduce the delay between retry attempts. Started with a base delay of 1 second and an exponential multiplier of 2, so the expected delays increase from 1 second to 2 seconds, then 4 seconds, and so on.
+- Result: Identified the basic mechanism for implementing exponential backoff: calculate an increasing delay based on the retry attempt and pause execution using `time.sleep()` before making the next attempt. Also added a maximum retry limit so the operation does not continue retrying indefinitely.
+- Source consulted: AWS documentation on retry behavior and exponential backoff with jitter; Python documentation for `time.sleep()`.
+- Next: Test the prototype with an operation that fails repeatedly and observe whether the retry delays increase as expected. Then test a case where the operation eventually succeeds and verify that no unnecessary retries occur.
