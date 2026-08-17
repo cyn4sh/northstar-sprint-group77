@@ -40,3 +40,10 @@
 - Result: Identified the basic mechanism for implementing exponential backoff: calculate an increasing delay based on the retry attempt and pause execution using `time.sleep()` before making the next attempt. Also added a maximum retry limit so the operation does not continue retrying indefinitely.
 - Source consulted: AWS documentation on retry behavior and exponential backoff with jitter; Python documentation for `time.sleep()`.
 - Next: Test the prototype with an operation that fails repeatedly and observe whether the retry delays increase as expected. Then test a case where the operation eventually succeeds and verify that no unnecessary retries occur.
+
+### [16:48] Attempting: Run the retry/backoff prototype to verify delay behavior and max-retry handling.
+
+- Tried: Ran `retry_backoff.py`, where `unreliable_operation()` always fails, to observe the retry sequence and delay pattern in practice.
+- Result: Confirmed the expected exponential pattern — Attempt 1 failed, waited 1 second; Attempt 2 failed, waited 2 seconds; Attempt 3 failed, waited 4 seconds; Attempt 4 failed and hit the max retry limit, at which point the exception was re-raised and a traceback printed. This confirmed the max-retry path works correctly — the program doesn't silently swallow a permanent failure, it surfaces it once retries are exhausted.
+- Source consulted: None — this was direct testing of my own code.
+- Next: Modify `unreliable_operation()` to fail a set number of times and then succeed, to test and confirm the "eventual success" path (currently untested since the function never succeeds).
